@@ -1,0 +1,29 @@
+GET http://localhost:4000
+
+###
+
+POST http://localhost:4000
+content-type: application/json
+
+{
+    "name":"Vivo v20",
+    "price":19900
+}
+
+###
+GET http://localhost:4000/5
+
+
+###
+PUT http://localhost:4000
+content-type: application/json
+
+{
+    "id":5,
+    "name":"Vivo v20",
+    "price":14999
+}
+
+###
+
+DELETE http://localhost:4000/4
