@@ -1,3 +1,47 @@
+GET http://localhost:2000/
+
+###
+
+POST http://localhost:2000
+content-type: application/json
+
+{
+    "pro_name":"Micormax A1",
+    "pro_price":5999
+}
+
+###
+
+GET http://localhost:2000/2
+
+###
+
+PUT http://localhost:2000/2
+content-type: application/json
+
+{
+    "pro_name":"Yu ACE",
+    "pro_price":6999
+}
+
+
+
+###
+
+DELETE http://localhost:2000/2
+
+
+
+
+
+
+
+
+
+
+
+
+
 GET http://localhost:4000
 
 ###
