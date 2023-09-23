@@ -1,11 +1,13 @@
 const express=require('express')
 const bodyParser = require('body-parser');
+const cors=require('cors')
 
 const app=express()
 const port=2000
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors())
 
 // import Sequelize and DataTypes
 const{Sequelize,DataTypes}=require('sequelize')
