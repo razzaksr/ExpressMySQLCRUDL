@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML AJAX CRUDL Client For Express Rest</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            // list
+            $("table").mouseenter(()=>{
+                $.get("http://localhost:2000/",(data)=>{
+                    data.map((d)=>{
+                        $("#view").append(
+                            "<tr><td>"+d.pro_id+"</td><td>"+d.pro_name+"</td><td>"+d.pro_price+"</td></tr>"
+                        )
+                    })
+                })
+            })
+            $("table").mouseleave(()=>{
+                $("#view").html("")
+            })
+
+            // create
+            $("#save").click((eve)=>{
+                var name=$("input[name=pro_name]").val()
+                var price=$("input[name=pro_price]").val()
+                price=parseInt(price)
+
+                const myData={
+                    "pro_name":name,
+                    "pro_price":price
+                }
+
+                alert(JSON.stringify(myData))
+
+                eve.preventDefault()
+
+                $.ajax({
+					type: "POST",
+                    dataType:"text",
+					contentType: "application/json;charset=utf-8",
+					url: "http://localhost:2000/",
+					data: JSON.stringify(myData),
+                    success:function(data){
+                        $("#info").text("added success")
+                        $("input[name=pro_name]").val("")
+                        $("input[name=pro_price]").val("")
+                    },
+                    error:(err)=>{
+                        $("#info").text("added failure")
+                    }
+				});
+            })
+
+            // read
+            $("#read").click((eve)=>{
+                eve.preventDefault()
+                var id=$("input[name=readId]").val()
+                id=parseInt(id)
+                alert(id)
+                $.get("http://localhost:2000/"+id,(data)=>{
+                        $("#info").text("read success")                       
+                        $("input[name=pro_name]").val(data.pro_name)
+                        $("input[name=pro_price]").val(data.pro_price)
+                        $("input[name=pro_id]").val(data.pro_id)
+                    }
+				);
+                $("input[name=byId]").val("")
+            })
+
+            // update
+            $("#update").click((eve)=>{
+                var id=$("input[name=pro_id]").val()
+                var name=$("input[name=pro_name]").val()
+                var price=$("input[name=pro_price]").val()
+                id=parseInt(id)
+                price=parseInt(price)
+                //alert(typeof(name)+" "+typeof(sslc)+" "+typeof(hsc)+" "+typeof(city))
+
+                const myData={
+                    "pro_id":id,
+                    "pro_name":name,
+                    "pro_price":price
+                }
+
+                alert(JSON.stringify(myData))
+
+                eve.preventDefault()
+
+                $.ajax({
+					type: "PUT",
+                    dataType:"text",
+					contentType: "application/json;charset=utf-8",
+					url: "http://localhost:2000/"+id,
+					data: JSON.stringify(myData),
+                    success:function(data){
+                        $("#info").text("updated success")
+                        $("input[name=pro_id]").val("")
+                        $("input[name=pro_name]").val("")
+                        $("input[name=pro_price]").val("")
+                    },
+                    error:(err)=>{
+                        $("#info").text("updated failure")
+                    }
+				});
+            })
+
+            // Delete
+            $("#del").click((eve)=>{
+                eve.preventDefault()
+                var id=$("input[name=byId]").val()
+                id=parseInt(id)
+                $.ajax({
+					type: "DELETE",
+                    dataType:"text",
+					contentType: "application/json;charset=utf-8",
+					url: "http://localhost:2000/"+id,
+                    success:function(data){
+                        $("#info").text("deleted success")
+                    },
+                    error:(err)=>{
+                        $("#info").text("deleted failure")
+                    }
+				});
+                $("input[name=byId]").val("")
+            })
+        })
+    </script>
+</head>
+<body>
+    <table border="4px">
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="view">
+            
+        </tbody>
+    </table>
+    <form name="insertAndUpdate">
+        <input type="text" name="pro_id" placeholder="no need while insert new"/>
+        <input type="text" name="pro_name" />
+        <input type="text" name="pro_price" />
+        <button id="save">
+            Add
+        </button>
+        <button id="update">
+            Update
+        </button>
+    </form>
+    <p id="info"></p>
+    <div>
+        <input type="text" name="byId"/>
+        <button id="del">Delete</button>
+    </div>
+    <div>
+        <input type="text" name="readId"/>
+        <button id="read">Read</button>
+    </div>
+    <hr color="red"/>
+</body>
+</html>
